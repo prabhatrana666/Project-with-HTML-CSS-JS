@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>English to Hindi Converter Example</title>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+<body class="container-fluid" >
+
+  <h3 style="margin-left: 400px;"> <u>Hindi Typing</u> </h3>
+
+  <div style="margin-top: 30px; margin-left: 350px;" >
+    <label for="englishInput">Type in English:</label>
+    <input type="text" id="englishInput" />
+
+    <br>
+
+    <div style="margin-left: 100px; z-index: -1;" >
+    <a href="#" class="select-option" class="btn btn-primary" >
+          <p id="hindiOutput"></p> </a>
+    </div>
+  </div>
+  
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+
+
+    $('#englishInput').keypress(function (e) {
+
+      // key code
+      var key  = (e.keyCode ? e.keyCode : e.which);
+      if(key == 13)  // the enter key code
+        {
+          $('#englishInput').val($('#hindiOutput').text());
+          $('#hindiOutput').text('')
+          $('.select-option').hide();
+          // return false;  
+        }
+        else{
+          $('.select-option').show();
+
+        }
+      const englishText = $('#englishInput').val();
+
+      $.ajax({
+        url: `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=hi&dt=t&q=${encodeURI(englishText)}`,
+        success: function(result) {
+            
+            if(result[0] != undefined &&  result[0] != null)
+            {
+              const hindiText = result[0][0][0];
+              $('#hindiOutput').text(hindiText);
+
+            }
+            else{
+              $('#hindiOutput').text('');  
+            }
+
+        }
+      });
+    });
+
+    $(document).on("click", ".select-option", function(){
+        $('#englishInput').val($('#hindiOutput').text());
+        $('#hindiOutput').text('')
+    })
+
+  </script>
+</body>
+</html>
